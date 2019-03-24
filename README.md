@@ -2,7 +2,7 @@
 This repository is going to be used to locate the resources for the development of a RL approach to
 VMI inventory management for perishable products.
 
-AUTORS:
+AUTHORS:
 Laura Hincapie
 Juan D. Carvajal
 
