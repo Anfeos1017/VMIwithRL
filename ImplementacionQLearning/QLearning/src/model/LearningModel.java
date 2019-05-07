@@ -1,10 +1,11 @@
 package model;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public abstract class LearningModel {
+public abstract class LearningModel implements Cloneable{
 
 	protected HashSet<String> states;
 	protected HashSet<String> actions;
@@ -13,6 +14,11 @@ public abstract class LearningModel {
 	protected HashMap<String,HashMap<String,String>>transitionFunction;
 	
 	
+	protected double totalReward;
+	protected String lastState;
+	protected boolean blocked;
+	protected ArrayList<String> path;
+	
 	public LearningModel(String initialState) {
 		states=new HashSet<String>();
 		actions=new HashSet<String>();
@@ -20,7 +26,14 @@ public abstract class LearningModel {
 		transitionFunction=new HashMap<String,HashMap<String,String>>();
 		registerState(initialState);
 		this.initialState=initialState;
+
 		
+		//agregados
+		totalReward = 0;
+		lastState = null;
+		blocked = false;
+		path = new ArrayList<String>();
+
 	}
 	
 	
@@ -61,7 +74,21 @@ public abstract class LearningModel {
 		this.finalStates.add(state);
 	}
 	
-	
+	 public Object clone(){
+	        Object obj=null;
+	        try{
+	            obj=super.clone();
+	        }catch(CloneNotSupportedException ex){
+	            System.out.println(" no se puede duplicar");
+	        }
+	        return obj;
+	    }
+
+	 
+	 public void blocked()
+	 {
+		 blocked = true;
+	 }
 	public abstract double getReward(String state, String action);
 	public abstract void notifyCurrentState(String state);
 	
