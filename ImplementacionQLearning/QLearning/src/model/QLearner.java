@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import javafx.scene.shape.Path;
+
 import test.Laberinto;
 
 public class QLearner  {
