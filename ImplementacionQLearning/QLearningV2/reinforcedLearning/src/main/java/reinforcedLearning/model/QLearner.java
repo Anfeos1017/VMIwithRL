@@ -190,7 +190,7 @@ public class QLearner<M extends AbstractModel<S, A>, S extends State, A extends 
 				}
 				
 			}
-			System.out.println(i+":" + cumReward );
+			System.out.println(i+"," + cumReward +","+(explotation/(double)totalStep) );
 			// System.out.println("Q(inicio): "+this.Qtable[0][0]);
 			// System.out.println("Q(final):
 			// "+this.Qtable[this.Qtable.length-1][this.Qtable[0].length-1]);
