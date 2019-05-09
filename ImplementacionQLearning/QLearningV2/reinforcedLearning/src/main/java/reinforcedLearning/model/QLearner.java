@@ -199,4 +199,110 @@ public class QLearner<M extends AbstractModel<S, A>, S extends State, A extends 
 		this.printQTable();
 	}
 
+	
+
+	public void fitModelBySteps(int runs, int no_steps) throws Exception {
+		Random rand = new Random();
+		for (int i = 0; i < runs; i++) {
+			
+			double cumReward = 0;
+			M model = (M) this.model.getInitialSystem();
+			boolean stoppedRun = false;
+			int step = 0;
+			int totalStep = 0;
+			int explotation=0;
+			while (!stoppedRun) {
+				step++;
+				// System.out.println(model.currentState.name);
+				if (rand.nextDouble() <= (i / (double) runs)) {
+					// EXPLOTATION
+					totalStep++;
+					explotation++;
+					A nextAction = this.pickOptimalAction(model.currentState, model);
+
+					if (nextAction != null) {
+						double reward = model.getReward(model.currentState, nextAction);
+						cumReward += reward;
+						S nextState = model.getNextState(model.currentState, nextAction);
+						//System.out.println(model.currentState.name+" + "+nextAction.name+" => "+nextState.name +" ; "+ cumReward+" ; "+this.Qtable[this.stateMapping.get(model.currentState.name)][this.actionMapping.get(nextAction.name)]);
+						double max = Double.NEGATIVE_INFINITY;
+
+						for (A action : model.allowedActions.get(nextState.name)) {
+							if (this.Qtable[this.stateMapping.get(nextState.name)][this.actionMapping
+									.get(action.name)] > max) {
+								max = this.Qtable[this.stateMapping.get(nextState.name)][this.actionMapping
+										.get(action.name)];
+
+							}
+						}
+
+						double qaux = this.Qtable[this.stateMapping.get(model.currentState.name)][this.actionMapping
+								.get(nextAction.name)];
+						this.Qtable[this.stateMapping.get(model.currentState.name)][this.actionMapping
+								.get(nextAction.name)] += this.learningRate * (reward + (this.discountFactor*(max - qaux)));
+
+						model.setAsCurrentState(model.takeAction(model.currentState, nextAction));
+						if (no_steps== step ) {
+							stoppedRun = true;
+							// System.out.println("Reached final State on Step: "+step);
+						}
+					} else {
+						stoppedRun = true;
+						// System.out.println("Reached dead State on Step: "+step);
+					}
+
+				} else {
+					// EXPLORATION
+					A nextAction = model.chooseRandomAction(model.currentState);
+					totalStep++;
+					if (nextAction != null) {
+						double reward = model.getReward(model.currentState, nextAction);
+						cumReward += reward;
+						S nextState = model.getNextState(model.currentState, nextAction);
+						double max = Double.NEGATIVE_INFINITY;
+
+						if(model.allowedActions.get(nextState.name) == null)
+						{
+							max = 0.0;
+						}else {
+							for (A action : model.allowedActions.get(nextState.name)) {
+								if (this.Qtable[this.stateMapping.get(nextState.name)][this.actionMapping
+										.get(action.name)] > max) {
+									max = this.Qtable[this.stateMapping.get(nextState.name)][this.actionMapping
+											.get(action.name)];
+
+								}
+							}
+						}
+					
+
+						double qaux = this.Qtable[this.stateMapping.get(model.currentState.name)][this.actionMapping
+								.get(nextAction.name)];
+						this.Qtable[this.stateMapping.get(model.currentState.name)][this.actionMapping
+						                            								.get(nextAction.name)] += this.learningRate * (reward + (this.discountFactor*(max - qaux)));
+
+						model.setAsCurrentState(model.takeAction(model.currentState, nextAction));
+						if (no_steps== step ) {
+							stoppedRun = true;
+							// System.out.println("Reached final State on Step: "+step);
+						}
+					} else {
+						stoppedRun = false;
+						// System.out.println("Reached dead State on Step: "+step);
+					}
+
+				}
+				
+			}
+			System.out.println(i+":" + cumReward );
+			// System.out.println("Q(inicio): "+this.Qtable[0][0]);
+			// System.out.println("Q(final):
+			// "+this.Qtable[this.Qtable.length-1][this.Qtable[0].length-1]);
+			//System.out.println((i)+" : "+ "Explotation:"+(explotation/(double)totalStep));
+		}
+		this.printQTable();
+	}
+
+
+	
 }

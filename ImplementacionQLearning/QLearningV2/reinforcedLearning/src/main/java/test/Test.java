@@ -1,5 +1,7 @@
 package test;
 
+import java.util.Random;
+
 import reinforcedLearning.implementation.Accion;
 import reinforcedLearning.implementation.Estado;
 import reinforcedLearning.implementation.Laberinto;
@@ -14,6 +16,7 @@ public class Test {
 		QLearner<Laberinto, Estado, Accion> ql=new QLearner<Laberinto, Estado, Accion>(l, 0.9,0.05);
 		ql.fitModel(1000);
 		l.imprimirLaberinto();
+		System.out.println("HOLAAAAAAAAA");
 	}
 
 }
