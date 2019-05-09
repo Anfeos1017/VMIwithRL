@@ -196,7 +196,7 @@ public class QLearner<M extends AbstractModel<S, A>, S extends State, A extends 
 			// "+this.Qtable[this.Qtable.length-1][this.Qtable[0].length-1]);
 			//System.out.println((i)+" : "+ "Explotation:"+(explotation/(double)totalStep));
 		}
-		//this.printQTable();
+		this.printQTable();
 	}
 
 }
