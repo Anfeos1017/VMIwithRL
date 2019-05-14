@@ -1,11 +1,10 @@
 package test;
 
-import java.util.Random;
+
 
 import reinforcedLearning.implementation.Accion;
 import reinforcedLearning.implementation.Estado;
 import reinforcedLearning.implementation.Laberinto;
-import reinforcedLearning.model.AbstractModel;
 import reinforcedLearning.model.QLearner;
 
 public class Test {
