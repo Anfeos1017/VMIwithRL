@@ -11,7 +11,7 @@ public class TestVMI {
 		// TODO Auto-generated method stub
 		EjemploVMI ejemplo = new EjemploVMI(3);
 		QLearner<EjemploVMI, EstadoVMI, AccionVMI> ql = new QLearner<EjemploVMI, EstadoVMI,AccionVMI>(ejemplo, 0.9,0.05);
-		ql.fitModelBySteps(10000, 10);
+		ql.fitModelBySteps(100000, 10);
 		
 	}
 
